@@ -160,6 +160,26 @@ type OpenStats struct {
 	s C.struct_pf_status
 }
 
+func (s *OpenStats) Enabled() bool {
+	return s.s.running != 0
+}
+
+func (s *OpenStats) StateCount() int {
+	return int(s.s.states)
+}
+
+func (s *OpenStats) StateSearches() int {
+	return int(s.s.fcounters[0])
+}
+
+func (s *OpenStats) StateInserts() int {
+	return int(s.s.fcounters[1])
+}
+
+func (s *OpenStats) StateRemovals() int {
+	return int(s.s.fcounters[2])
+}
+
 func (p *OpenPf) Stats() (Stats, error) {
 	stats := C.struct_pf_status{}
 
